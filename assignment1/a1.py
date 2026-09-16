@@ -4,6 +4,7 @@
 
 from sys import stderr
 from typing import List, Dict, Callable
+import ast
 
 def not_yet() -> bool:
     raise NotImplementedError("Command not implemented.")
@@ -17,6 +18,13 @@ CommandMap = Dict[str, Callable[[str], bool]]
 class CommandInterface:
     def __init__(self) -> None:
         # you can add your own initialisation here
+        
+        self.state = []
+        self.toplay = 'b'
+        self.komi = 0.0
+        self.output = 0
+        self.black_score = 0.0
+        self.white_score = 0.0
         self.commands: CommandMap = {
             "help": self.cmd_help,
             "heapgo": self.cmd_heapgo,
@@ -29,11 +37,62 @@ class CommandInterface:
             "winner": self.cmd_winner,
             }
 
+    def check_heap(self, state):
+        
+        if not isinstance(state, list):
+            return -1
+        
+        if len(state) == 0 or len(state) > 10:
+            return -1
+            
+        for i in range(len(state)):
+            if not isinstance(state[i], list):
+                return -1
+            if len(state[i]) > 10 or len(state[i]) < 1:
+                return -1
+                
+            for j in range(len(state[i])):
+                if not isinstance(state[i][j],tuple):
+                    return -1 
+                if len(state[i][j]) != 2:
+                    return -1
+                if state[i][j][0] != 'w'and state[i][j][0] != 'b':
+                    return -1
+                if not isinstance(state[i][j][1], int) or state[i][j][1] < 1 or state[i][j][1] > 20 :
+                    return -1
+                        
+        return 1
+            
 #============================================================================
 # You need to implement the following methods.
 #============================================================================
     def cmd_heapgo(self, args: str) -> bool:
-        return not_yet()
+        try:
+            komi_text, seperator, state_text = args.partition(" ")
+            
+            if seperator == '' or state_text.strip() == '':
+                return False
+            
+            komi = float(komi_text)
+            state = ast.literal_eval(state_text)
+
+        except (ValueError, SyntaxError):
+            return False
+        
+        if komi % 1 != 0.5 or komi >= 100 or komi <= -100:
+            return False
+        
+        if self.check_heap(state) != 1:
+            return False
+        
+        self.komi = komi
+        self.state = state
+        self.black_score = 0
+        self.white_score = komi
+        self.toplay = 'b'
+        
+        return True
+    
     def cmd_show(self, args: str) -> bool:
         return not_yet()
     def cmd_toplay(self, args: str) -> bool:
