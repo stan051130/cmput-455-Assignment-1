@@ -94,9 +94,13 @@ class CommandInterface:
         return True
     
     def cmd_show(self, args: str) -> bool:
-        return not_yet()
+        print(f"k {self.komi} {self.state}")
+        return True
+
     def cmd_toplay(self, args: str) -> bool:
-        return not_yet()
+        print(self.toplay)
+        return True
+
     def cmd_play(self, args: str) -> bool:
         return not_yet()
     def cmd_legal(self, args: str) -> bool:
