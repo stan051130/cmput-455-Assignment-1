@@ -102,7 +102,50 @@ class CommandInterface:
         return True
 
     def cmd_play(self, args: str) -> bool:
-        return not_yet()
+        try:
+            heap_num = int(args)
+        except (ValueError):
+            return False
+        
+        if heap_num < 0:
+            return False
+        
+        if heap_num > len(self.state) - 1:
+            return False
+        
+        if len(self.state[heap_num]) == 0:
+            return False
+        
+        if self.toplay == 'b':
+            while True:
+                if len(self.state[heap_num]) == 0:
+                    self.toplay = 'w'
+                    return True
+                elif self.state[heap_num][-1][0] == 'w':
+                    self.black_score += self.state[heap_num][-1][1]
+                    self.state[heap_num].pop()
+                    self.toplay = 'w'
+                    return True
+                elif self.state[heap_num][-1][0] == 'b':
+                    self.black_score += self.state[heap_num][-1][1]
+                    self.state[heap_num].pop()
+                    
+        if self.toplay == 'w':
+            while True:
+                if len(self.state[heap_num]) == 0:
+                    self.toplay = 'b'
+                    return True
+                elif self.state[heap_num][-1][0] == 'b':
+                    self.white_score += self.state[heap_num][-1][1]
+                    self.state[heap_num].pop()
+                    self.toplay = 'b'
+                    return True
+                elif self.state[heap_num][-1][0] == 'w':
+                    self.white_score += self.state[heap_num][-1][1]
+                    self.state[heap_num].pop()
+
+        return False
+        
     def cmd_legal(self, args: str) -> bool:
         return not_yet()
     def cmd_genmove(self, args: str) -> bool:
