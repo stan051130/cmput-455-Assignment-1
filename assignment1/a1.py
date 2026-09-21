@@ -98,7 +98,12 @@ class CommandInterface:
         return True
 
     def cmd_toplay(self, args: str) -> bool:
-        print(self.toplay)
+        color = args.strip()
+
+        if color != 'b' and color != 'w':
+            return False
+
+        self.toplay = color
         return True
 
     def cmd_play(self, args: str) -> bool:
