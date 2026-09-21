@@ -1,0 +1,46 @@
+?heapgo 0.5 [[('w', 9), ('b', 12), ('w', 5)], [('b', 6), ('b', 9)]]
+= 1
+
+?show
+broken on purpose
+= 1
+
+?toplay w
+= 1
+
+?play 0
+= 1
+
+?show
+k 0.5 [[('w', 9)], [('b', 6), ('b', 9)]]
+= 1
+
+?score
+b 0 w 17.5
+= 1
+
+# Black takes ('b', 9), ('b', 6): heap empty
+?play 1
+= 1
+
+?show
+k 0.5 [[('w', 9)], []]
+= 1
+
+?score
+b 15 w 17.5
+= 1
+
+?play 1
+= -1
+
+?play 0
+= 1
+
+?score
+b 15 w 26.5
+= 1
+
+?winner
+w
+= 1

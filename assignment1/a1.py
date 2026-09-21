@@ -4,6 +4,7 @@
 
 from sys import stderr
 from typing import List, Dict, Callable
+from random import choice
 import ast
 
 def not_yet() -> bool:
@@ -152,13 +153,38 @@ class CommandInterface:
         return False
         
     def cmd_legal(self, args: str) -> bool:
-        return not_yet()
+        try:
+            location = int(args)
+        except ValueError:
+            return False
+        if location >= len(self.state) or location < 0 or len(self.state[location]) == 0:
+            print("no")
+            return True
+        print("yes")
+        return True
+
     def cmd_genmove(self, args: str) -> bool:
-        return not_yet()
+        moves = []
+        for i in range(len(self.state)):
+            if len(self.state[i]) > 0:
+                moves.append(i)
+        if len(moves) > 0:
+            print(choice(moves))
+            return True
+        else:
+            return False
+
     def cmd_score(self, args: str) -> bool:
-        return not_yet()
+        print(f"b {self.black_score:.0f} w {self.white_score:.1f}")
+        return True
+
     def cmd_winner(self, args: str) -> bool:
-        return not_yet()
+        # check if the game is over
+        if any(len(heap) > 0 for heap in self.state):
+            return False
+        winner = 'b' if self.black_score > self.white_score else 'w'
+        print(winner)
+        return True
 #============================================================================
 # End of functions requiring implementation
 #============================================================================
