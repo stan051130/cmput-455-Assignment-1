@@ -1,0 +1,80 @@
+?heapgo 0.5 [[('w', 9), ('b', 12), ('w', 5)], [('b', 6), ('b', 9)]]
+= 1
+
+?show
+k 0.5 [[('w', 9), ('b', 12), ('w', 5)], [('b', 6), ('b', 9)]]
+= 1
+
+?legal 0
+yes
+= 1
+
+?legal 1
+yes
+= 1
+
+?legal 2
+no
+= 1
+
+# Black takes the top token ('w', 5) from heap 0
+?play 0
+= 1
+
+# test 38
+?show
+k 0.5 [[('w', 9), ('b', 12)], [('b', 6), ('b', 9)]]
+= 1
+
+# test 39
+?score
+b 5 w 0.5
+= 1
+
+# after a move, it is the other player's turn: White takes ('b', 12)
+?play 0
+= 1
+
+?show
+k 0.5 [[('w', 9)], [('b', 6), ('b', 9)]]
+= 1
+
+?score
+b 5 w 12.5
+= 1
+
+# Black takes ('b', 9), ('b', 6): heap empty, so no opponent token
+?play 1
+= 1
+
+?show
+k 0.5 [[('w', 9)], []]
+= 1
+
+# test 45
+?score
+b 20 w 12.5
+= 1
+
+?winner
+= -1
+
+# only one move left, so genmove must play heap 0
+?genmove
+0
+= 1
+
+# test 48 - broken
+?show
+k 0.5 [[], []]
+= 1
+
+# test 49
+?score
+b 20 w 21.5
+= 1
+
+?winner
+w
+= 1
+

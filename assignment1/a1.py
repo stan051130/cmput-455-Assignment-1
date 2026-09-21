@@ -169,7 +169,9 @@ class CommandInterface:
             if len(self.state[i]) > 0:
                 moves.append(i)
         if len(moves) > 0:
-            print(choice(moves))
+            i = choice(moves)
+            print(i)
+            self.cmd_play(str(i))
             return True
         else:
             return False
