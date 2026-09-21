@@ -26,6 +26,7 @@ class CommandInterface:
         self.output = 0
         self.black_score = 0.0
         self.white_score = 0.0
+        self.initialized = False
         self.commands: CommandMap = {
             "help": self.cmd_help,
             "heapgo": self.cmd_heapgo,
@@ -91,14 +92,19 @@ class CommandInterface:
         self.black_score = 0
         self.white_score = komi
         self.toplay = 'b'
+        self.initialized = True
         
         return True
     
     def cmd_show(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         print(f"k {self.komi} {self.state}")
         return True
 
     def cmd_toplay(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         color = args.strip()
 
         if color != 'b' and color != 'w':
@@ -108,6 +114,8 @@ class CommandInterface:
         return True
 
     def cmd_play(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         try:
             heap_num = int(args)
         except (ValueError):
@@ -153,6 +161,8 @@ class CommandInterface:
         return False
         
     def cmd_legal(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         try:
             location = int(args)
         except ValueError:
@@ -164,6 +174,8 @@ class CommandInterface:
         return True
 
     def cmd_genmove(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         moves = []
         for i in range(len(self.state)):
             if len(self.state[i]) > 0:
@@ -177,10 +189,14 @@ class CommandInterface:
             return False
 
     def cmd_score(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         print(f"b {self.black_score:.0f} w {self.white_score:.1f}")
         return True
 
     def cmd_winner(self, args: str) -> bool:
+        if not self.initialized:
+            return False
         # check if the game is over
         if any(len(heap) > 0 for heap in self.state):
             return False
